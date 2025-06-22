@@ -21,8 +21,12 @@ export async function POST(req: Request) {
   }
 
   if (body.input.length > 0) {
-    await db.job.createMany({ data: body.input });
+    const data = await db.job.createMany({
+      data: body.input,
+      skipDuplicates: true,
+    });
+    return Response.json({ received: true, count: data.count });
   }
 
-  return Response.json({ received: true });
+  return Response.json({ received: true, count: 0 });
 }
