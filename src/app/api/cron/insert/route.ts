@@ -7,9 +7,8 @@ export async function POST(req: Request) {
     input: {
       url: string;
       title: string;
-      companyName: string;
-      location: string;
-    };
+      description: string;
+    }[];
   };
 
   if (body.apiKey !== env.CRON_API_KEY) {
@@ -20,6 +19,6 @@ export async function POST(req: Request) {
     });
   }
 
-  await db.job.create({ data: body.input });
+  await db.job.createMany({ data: body.input });
   return Response.json({ received: true });
 }

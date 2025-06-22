@@ -8,12 +8,10 @@ datasource db {
 }
 
 model Job {
-    id          String @id @default(cuid())
+    id          String   @id @default(cuid())
     url         String
     title       String
-    companyName String
-    location    String
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    description String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
