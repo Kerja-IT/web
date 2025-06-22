@@ -8,12 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { api, HydrateClient } from "@/trpc/server";
 
-type Props = { searchParams: { query?: string } };
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ query: string }>;
+}) {
+  const { query } = await searchParams;
 
-export default async function Home({ searchParams }: Props) {
-  const query = searchParams.query ?? "";
-
-  const jobs = await api.job.getAll({ searchTerm: query });
+  const jobs = await api.job.getAll({ searchTerm: query ?? "" });
 
   return (
     <HydrateClient>
