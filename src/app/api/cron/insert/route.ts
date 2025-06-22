@@ -8,6 +8,7 @@ export async function POST(req: Request) {
       url: string;
       title: string;
       description: string;
+      source: string;
     }[];
   };
 
@@ -19,6 +20,9 @@ export async function POST(req: Request) {
     });
   }
 
-  await db.job.createMany({ data: body.input });
+  if (body.input.length > 0) {
+    await db.job.createMany({ data: body.input });
+  }
+
   return Response.json({ received: true });
 }

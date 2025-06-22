@@ -12,6 +12,7 @@ model Job {
     url         String
     title       String
     description String
+    source      String
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 }
