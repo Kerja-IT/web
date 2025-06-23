@@ -53,7 +53,7 @@ export default async function Home({
                   target="_blank"
                   className="text-blue-500 visited:text-purple-900 hover:underline"
                 >
-                  {job.title}
+                  {parse(job.title)}
                 </Link>
                 <p className="text-xs text-gray-500">
                   {formatDistanceToNow(job.createdAt)} ago • {job.source}
