@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import qs from "query-string";
 import { formatDistanceToNow } from "date-fns";
 import parse from "html-react-parser";
 
@@ -15,23 +16,32 @@ export default function Home() {
   const router = useRouter();
 
   const query = searchParams.get("query");
+  const page = searchParams.get("page");
 
-  const getAllJobs = api.job.getAll.useQuery({ searchTerm: query ?? "" });
-  const { data: jobs, isError, isLoading } = getAllJobs;
+  const getAllJobs = api.job.getAll.useQuery({
+    searchTerm: query ?? "",
+    page: page ? Number(page) : null,
+  });
+
+  const { data, isError, isLoading } = getAllJobs;
 
   const [input, setInput] = useState(query ?? "");
 
   useEffect(() => {
     const debouncer = setTimeout(() => {
-      if (input) {
-        router.push(`/?query=${input}`);
-      } else {
-        router.push("/");
-      }
+      router.push(
+        `/?${qs.stringify(
+          { query: input, page: page },
+          { skipEmptyString: true, skipNull: true },
+        )}`,
+      );
     }, 500);
 
     return () => clearTimeout(debouncer);
-  }, [input, router]);
+  }, [input, page, router]);
+
+  if (!data) return null;
+  const { jobs } = data;
 
   return (
     <main className="mx-auto max-w-6xl p-4">
@@ -53,6 +63,9 @@ export default function Home() {
           onChange={(e) => setInput(e.target.value)}
         />
       </form>
+      <div className="mt-4 text-xs text-gray-500">
+        <p>Total: {jobs?.length}</p>
+      </div>
       <div className="mt-4">
         {isError && (
           <p className="text-sm text-gray-800">
