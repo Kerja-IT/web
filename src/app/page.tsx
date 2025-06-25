@@ -40,9 +40,6 @@ export default function Home() {
     return () => clearTimeout(debouncer);
   }, [input, page, router]);
 
-  if (!data) return null;
-  const { jobs } = data;
-
   return (
     <main className="mx-auto max-w-6xl p-4">
       <h1 className="text-xl">Kerja-IT.com</h1>
@@ -64,7 +61,7 @@ export default function Home() {
         />
       </form>
       <div className="mt-4 text-xs text-gray-500">
-        <p>Total: {jobs?.length}</p>
+        <p>Total: {data?.jobs?.length}</p>
       </div>
       <div className="mt-4">
         {isError && (
@@ -73,12 +70,12 @@ export default function Home() {
           </p>
         )}
         {isLoading && <p className="text-sm text-gray-800">Loading...</p>}
-        {jobs?.length === 0 && (
+        {data?.jobs?.length === 0 && (
           <p className="text-sm text-gray-800">No jobs found.</p>
         )}
-        {jobs &&
-          jobs.length > 0 &&
-          jobs.map((job) => (
+        {data?.jobs &&
+          data?.jobs.length > 0 &&
+          data?.jobs.map((job) => (
             <div key={job.id} className="mb-8">
               <Link
                 href={job.url}
